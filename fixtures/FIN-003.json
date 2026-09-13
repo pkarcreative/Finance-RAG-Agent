@@ -1,0 +1,18 @@
+{
+  "invoice": {
+    "invoice_ref": "INV-3003", "vendor_id": "V-700", "currency": "AUD",
+    "lines": [{ "description": "Consulting services", "quantity": 1, "unit_price": "4000.00", "line_total": "4000.00" }],
+    "total": "4000.00"
+  },
+  "purchase_order": {
+    "po_ref": "PO-7003", "vendor_id": "V-700", "currency": "AUD", "status": "APPROVED",
+    "lines": [{ "description": "Consulting services", "quantity": 1, "unit_price": "4000.00", "line_total": "4000.00" }],
+    "total": "4000.00", "freight_allowed": false,
+    "receipts": [{ "grn_ref": "GRN-9003", "description": "Consulting services", "quantity_received": 1 }]
+  },
+  "vendor": {
+    "vendor_id": "V-700", "name": "Delta Advisory", "status": "ACTIVE",
+    "risk_flags": ["BANK_ACCOUNT_CHANGED"],
+    "bank_last_four": "8842", "created_date": "2026-08-20", "last_updated": "2026-09-01"
+  }
+}

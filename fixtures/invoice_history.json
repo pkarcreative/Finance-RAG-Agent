@@ -1,4 +1,5 @@
 [
   { "invoice_ref": "INV-0500", "vendor_id": "V-500", "amount": "1200.00", "currency": "AUD", "status": "PAID" },
-  { "invoice_ref": "INV-0777", "vendor_id": "V-311", "amount": "9800.00", "currency": "AUD", "status": "PAID" }
+  { "invoice_ref": "INV-0777", "vendor_id": "V-311", "amount": "9800.00", "currency": "AUD", "status": "PAID" },
+  { "invoice_ref": "INV-2002", "vendor_id": "V-500", "amount": "3000.00", "currency": "AUD", "status": "PAID" }
 ]

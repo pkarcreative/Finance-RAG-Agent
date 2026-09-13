@@ -1,0 +1,17 @@
+{
+  "invoice": {
+    "invoice_ref": "INV-4004", "vendor_id": "V-500", "currency": "AUD",
+    "lines": [{ "description": "Safety gloves", "quantity": 40, "unit_price": "50.00", "line_total": "2000.00" }],
+    "total": "2000.00"
+  },
+  "purchase_order": {
+    "po_ref": "PO-7004", "vendor_id": "V-500", "currency": "AUD", "status": "APPROVED",
+    "lines": [{ "description": "Safety gloves", "quantity": 40, "unit_price": "50.00", "line_total": "2000.00" }],
+    "total": "2000.00", "freight_allowed": false,
+    "receipts": []
+  },
+  "vendor": {
+    "vendor_id": "V-500", "name": "Ironworks Supply Co", "status": "ACTIVE", "risk_flags": [],
+    "bank_last_four": "4417", "created_date": "2021-03-14", "last_updated": "2024-11-02"
+  }
+}

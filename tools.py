@@ -65,3 +65,18 @@ def check_invoice_history(case_id) -> DuplicateCheck:
         paid = json.load(f)
     matches = [p["invoice_ref"] for p in paid if p["invoice_ref"] == inv]
     return DuplicateCheck(invoice_ref=inv, duplicate=bool(matches), matches=matches)
+
+
+_POSTED: dict[str, dict] = {}  # idempotency store: key -> decision result
+
+
+def submit_finance_decision(idempotency_key, outcome, approved):
+    # deny-by-default: never post without explicit approval
+    if not approved:
+        return {"status": "BLOCKED", "reason": "not approved"}
+    # idempotent: same key returns the original result, no second post
+    if idempotency_key in _POSTED:
+        return _POSTED[idempotency_key]
+    result = {"status": "POSTED", "outcome": outcome, "idempotency_key": idempotency_key}
+    _POSTED[idempotency_key] = result
+    return result

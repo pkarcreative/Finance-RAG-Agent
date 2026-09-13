@@ -1,0 +1,17 @@
+{
+  "invoice": {
+    "invoice_ref": "INV-5005", "vendor_id": "V-500", "currency": "AUD",
+    "lines": [{ "description": "Pallet racking", "quantity": 6, "unit_price": "1000.00", "line_total": "6000.00" }],
+    "total": "6000.00"
+  },
+  "purchase_order": {
+    "po_ref": "PO-7005", "vendor_id": "V-500", "currency": "AUD", "status": "APPROVED",
+    "lines": [{ "description": "Pallet racking", "quantity": 6, "unit_price": "1000.00", "line_total": "6000.00" }],
+    "total": "6000.00", "freight_allowed": false,
+    "receipts": [{ "grn_ref": "GRN-9005", "description": "Pallet racking", "quantity_received": 6 }]
+  },
+  "vendor": {
+    "vendor_id": "V-500", "name": "Ironworks Supply Co", "status": "ACTIVE", "risk_flags": [],
+    "bank_last_four": "4417", "created_date": "2021-03-14", "last_updated": "2024-11-02"
+  }
+}

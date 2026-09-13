@@ -1,0 +1,17 @@
+{
+  "invoice": {
+    "invoice_ref": "INV-2002", "vendor_id": "V-500", "currency": "AUD",
+    "lines": [{ "description": "Cable reels", "quantity": 10, "unit_price": "300.00", "line_total": "3000.00" }],
+    "total": "3000.00"
+  },
+  "purchase_order": {
+    "po_ref": "PO-7002", "vendor_id": "V-500", "currency": "AUD", "status": "APPROVED",
+    "lines": [{ "description": "Cable reels", "quantity": 10, "unit_price": "300.00", "line_total": "3000.00" }],
+    "total": "3000.00", "freight_allowed": false,
+    "receipts": [{ "grn_ref": "GRN-9002", "description": "Cable reels", "quantity_received": 10 }]
+  },
+  "vendor": {
+    "vendor_id": "V-500", "name": "Ironworks Supply Co", "status": "ACTIVE", "risk_flags": [],
+    "bank_last_four": "4417", "created_date": "2021-03-14", "last_updated": "2024-11-02"
+  }
+}
