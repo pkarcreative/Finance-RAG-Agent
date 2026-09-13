@@ -1,0 +1,36 @@
+{
+  "invoice": {
+    "invoice_ref": "INV-1001",
+    "vendor_id": "V-500",
+    "currency": "AUD",
+    "lines": [
+      { "description": "Steel brackets", "quantity": 100, "unit_price": "50.00", "line_total": "5000.00" },
+      { "description": "Freight", "quantity": 1, "unit_price": "250.00", "line_total": "250.00" }
+    ],
+    "total": "5250.00"
+  },
+  "purchase_order": {
+    "po_ref": "PO-7001",
+    "vendor_id": "V-500",
+    "currency": "AUD",
+    "status": "APPROVED",
+    "lines": [
+      { "description": "Steel brackets", "quantity": 100, "unit_price": "50.00", "line_total": "5000.00" },
+      { "description": "Freight", "quantity": 1, "unit_price": "250.00", "line_total": "250.00" }
+    ],
+    "total": "5250.00",
+    "freight_allowed": true,
+    "receipts": [
+      { "grn_ref": "GRN-9001", "description": "Steel brackets", "quantity_received": 100 }
+    ]
+  },
+  "vendor": {
+    "vendor_id": "V-500",
+    "name": "Ironworks Supply Co",
+    "status": "ACTIVE",
+    "risk_flags": [],
+    "bank_last_four": "4417",
+    "created_date": "2021-03-14",
+    "last_updated": "2024-11-02"
+  }
+}
