@@ -10,7 +10,7 @@ from openai import OpenAI
 load_dotenv()
 
 CORPUS_DIR = os.environ.get("CORPUS_DIR") or os.path.join(
-    os.path.dirname(__file__), "..", "finance_rag_corpus"
+    os.path.dirname(__file__), "finance_rag_corpus"
 )
 MODEL = "text-embedding-3-small"
 THRESHOLD = 0.4

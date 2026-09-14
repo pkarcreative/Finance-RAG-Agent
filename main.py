@@ -1,9 +1,11 @@
 from decimal import Decimal
 from uuid import uuid4
+import time
 
 from fastapi import FastAPI, HTTPException
 from pydantic import BaseModel, Field
 
+import audit
 from retriever import retrieve
 from tools import (
     get_purchase_order, get_vendor_record, check_invoice_history,
@@ -31,14 +33,22 @@ RUNS: dict[str, dict] = {}
 def start_run(case: Case):
     run_id = f"run_{uuid4().hex[:8]}"
     c = case.model_dump()
+    events = [audit.log(run_id, "RUN_STARTED", case_id=c["case_id"])]
+
+    t = time.perf_counter()
     facts = reconcile(c)
+    events.append(audit.log(run_id, "RECONCILED", exceptions=facts["exceptions"],
+                            duration_ms=round((time.perf_counter() - t) * 1000)))
+
+    t = time.perf_counter()
     rec = recommend(c, facts)
+    events.append(audit.log(run_id, "RECOMMENDED", outcome=rec["outcome"],
+                            duration_ms=round((time.perf_counter() - t) * 1000)))
+
+    events.append(audit.log(run_id, "AWAIT_APPROVAL"))
     RUNS[run_id] = {
-        "status": "AWAIT_APPROVAL",
-        "case": c,
-        "facts": facts,
-        "recommendation": rec,
-        "decision": None,
+        "status": "AWAIT_APPROVAL", "case": c, "facts": facts,
+        "recommendation": rec, "decision": None, "audit": events,
     }
     return {"run_id": run_id, **RUNS[run_id]}
 
@@ -62,6 +72,8 @@ def approve(run_id: str, approver: str):
     )
     run["status"] = "DONE"
     run["decision"] = decision | {"approver": approver}
+    run["audit"].append(audit.log(run_id, "APPROVED", approver=approver,
+                                  post_status=decision["status"]))
     return {"run_id": run_id, **run}
 
 
@@ -72,6 +84,7 @@ def reject(run_id: str, approver: str):
     run = RUNS[run_id]
     run["status"] = "REJECTED"
     run["decision"] = {"status": "REJECTED", "approver": approver}
+    run["audit"].append(audit.log(run_id, "REJECTED", approver=approver))
     return {"run_id": run_id, **run}
 
 
