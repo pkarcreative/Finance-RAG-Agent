@@ -8,9 +8,22 @@ stops for human approval before any consequential action is taken.
 The design goal is grounded evidence, explicit control and safe failure handling
 rather than a feature-rich demo.
 
+## Live deployment
+
+A running instance is deployed on Render (a managed platform running on AWS
+infrastructure):
+
+- Base URL: https://finance-rag-agent.onrender.com
+- Interactive API docs: https://finance-rag-agent.onrender.com/docs
+- Run the evaluation suite: https://finance-rag-agent.onrender.com/eval
+
+The instance embeds the policy corpus in memory on first request, so the first call
+after a period of inactivity may take a little longer while the index is built.
+
 ## Environment
 
-- Runs locally. Python 3.10 or later.
+- Runs locally, or deployed to a managed platform such as Render (which runs on AWS
+  infrastructure). Python 3.10 or later.
 - HTTP service built on FastAPI.
 - One real external integration: OpenAI (embeddings for retrieval, and a chat
   model for the recommendation step). Everything else is simulated from local
@@ -46,14 +59,34 @@ OPENAI_API_KEY=sk-your-key
 The corpus location defaults to `../finance_rag_corpus`. Override it with a
 `CORPUS_DIR` environment variable if needed.
 
-## Run
+## Run (local)
 
 ```
 uvicorn main:app --reload
 ```
 
 The service listens on `http://localhost:8000`. Interactive docs are at
-`http://localhost:8000/docs`.
+`http://localhost:8000/docs`. The base URL `/` returns a short index of the
+available operations.
+
+## Run (cloud, Render)
+
+The project deploys to Render directly from the linked GitHub repository. The
+settings are:
+
+- Build command: `pip install -r requirements.txt`
+- Start command: `uvicorn main:app --host 0.0.0.0 --port $PORT`
+- Environment variable: `OPENAI_API_KEY` set in the Render dashboard (never in the
+  repository)
+
+The corpus ships inside the repository, so no additional data setup is needed on
+the server. Render is a managed platform running on AWS infrastructure; this is not
+a native AWS account deployment, so there is no CloudFormation or Terraform. The
+start and build commands above, plus the dashboard environment variable, are the
+full reproducible configuration.
+
+Against the live instance, replace `http://localhost:8000` with
+`https://finance-rag-agent.onrender.com` in any command below.
 
 ## Operations
 

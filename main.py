@@ -29,6 +29,17 @@ app = FastAPI(title="Finance RAG Agent")
 RUNS: dict[str, dict] = {}
 
 
+@app.get("/")
+def root():
+    return {
+        "service": "Finance RAG Agent",
+        "docs": "/docs",
+        "operations": ["POST /runs", "GET /runs/{run_id}",
+                       "POST /runs/{run_id}/approve", "POST /runs/{run_id}/reject",
+                       "GET /eval"],
+    }
+
+
 @app.post("/runs")
 def start_run(case: Case):
     run_id = f"run_{uuid4().hex[:8]}"
