@@ -39,6 +39,20 @@ Rules:
 - A recommendation is not an approval. Never claim payment was made.
 Return ONLY JSON: {"outcome": ..., "rationale": ..., "citations": [doc_id, ...]}"""
 
+EXCEPTION_QUERIES = {
+    "DUPLICATE_INVOICE": "duplicate invoice detection fraud controls",
+    "VENDOR_RISK_FLAG": "vendor bank account change risk verification",
+    "MISSING_RECEIPT": "missing goods receipt invoice exceptions",
+    "CURRENCY_MISMATCH": "foreign currency invoice conversion",
+    "TOTAL_MISMATCH": "three-way match tolerances variance",
+    "VENDOR_NOT_ACTIVE": "vendor onboarding status",
+}
+
+
+def _query(facts):
+    parts = [EXCEPTION_QUERIES[e] for e in facts["exceptions"] if e in EXCEPTION_QUERIES]
+    return " ".join(parts) if parts else "invoice approval three-way match tolerances"
+
 
 def _call(user):
     resp = client.chat.completions.create(
@@ -58,7 +72,7 @@ def _validate(raw, clean):
 
 
 def recommend(case, facts):
-    policy = retrieve(f"invoice approval three-way match {case['vendor']}", k=4)
+    policy = retrieve(_query(facts), k=4)
     excerpts = [{"document_id": p["document_id"], "section": p["section"],
                  "confidence": p["confidence"], "text": p["text"]} for p in policy]
     user = json.dumps({"facts": facts, "policy": excerpts}, indent=2)
