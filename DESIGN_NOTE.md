@@ -4,9 +4,16 @@
 
 The control flow is a fixed, bounded pipeline rather than a free-roaming agent
 loop. Each run passes through explicit stages in order: intake and validation,
-policy retrieval, evidence gathering, deterministic reconciliation, LLM
+evidence gathering, deterministic reconciliation, policy retrieval and LLM
 recommendation, then a hard stop at `AWAIT_APPROVAL`. The consequential action
 runs only after an explicit human approval.
+
+Evidence gathering and reconciliation come first and produce the facts. Policy
+retrieval happens next and is driven by those facts: the query is built from the
+exceptions reconciliation found (for example a duplicate or a vendor risk flag), so
+the policy fetched matches the actual problem. A clean case with no exceptions falls
+back to a general three-way-match query. The retrieved policy and the facts are then
+passed together to the LLM, which selects an outcome and writes the cited rationale.
 
 I chose a framework-free implementation deliberately. The workflow has no dynamic
 branching that a model needs to steer and no open-ended tool selection. It is a
@@ -21,9 +28,9 @@ the one consequential tool.
 ```mermaid
 flowchart TD
     A[POST /runs] --> B[Validate request<br/>Pydantic contract]
-    B --> C[Retrieve policy<br/>RAG]
-    C --> D[Gather evidence<br/>mocked tools]
-    D --> E[Reconcile<br/>deterministic, Decimal]
+    B --> C[Gather evidence<br/>mocked tools]
+    C --> D[Reconcile<br/>deterministic, Decimal<br/>produces facts + exceptions]
+    D --> E[Retrieve policy<br/>RAG, query built from exceptions]
     E --> F[Recommend<br/>LLM, validated JSON]
     F --> G{AWAIT_APPROVAL}
     G -->|approve| H[submit_finance_decision<br/>idempotent, deny-by-default]
